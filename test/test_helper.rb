@@ -1,2 +1,4 @@
 require 'bundler/setup'
-Bundler.require :default, :development
+require 'test/unit'
+require 'runtest'
+require 'shoulda-context'
