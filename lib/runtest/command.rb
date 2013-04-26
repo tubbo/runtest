@@ -25,7 +25,7 @@ module Runtest
     end
 
     def file_name
-      "#{@file_name}".strip
+      File.expand_path "#{@file_name}".strip
     end
 
     def line_number
