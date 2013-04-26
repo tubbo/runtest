@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require 'bundler/setup'
 require 'runtest'
 
 ARGV.each { |from_argument| Runtest::Command.new(from_argument).perform! }
