@@ -1,12 +1,13 @@
 module Runtest
   class Command
     SYNTAX = /^(test|should)\s(\"|\')|(\"|\')\sdo$/
-    attr_accessor :file_name, :line_number
+    attr_accessor :file_name, :line_number, :options
 
     def initialize argument
       arguments = argument.split ':'
       @file_name =  arguments[0] || ""
       @line_number = arguments[1].to_i || 0
+      @base_command = "bundle exec ruby -Itest"
     end
 
     def perform!
@@ -29,7 +30,10 @@ module Runtest
       @line_number.to_i - 1
     end
 
-  protected
+    def base_command
+      @base_command ||= "ruby -Itest"
+    end
+
     def line_at_line_number
       file_contents[line_number].strip
     end
@@ -38,9 +42,13 @@ module Runtest
       File.read(file_name).split "\n"
     end
 
-  private
     def run_test options=""
-      system "bundle exec ruby -Itest #{file_name} #{options}"
+      @options = options
+      system consolidated_command
+    end
+
+    def consolidated_command
+      [ base_command, file_name, options ].join ' '
     end
   end
 end
