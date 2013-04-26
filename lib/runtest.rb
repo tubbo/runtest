@@ -1,5 +1,7 @@
 require "runtest/version"
+require "runtest/command"
 
 module Runtest
-  # Your code goes here...
+  # An exception thrown when the file passed in does not exist.
+  class FileNotFound < StandardError; end
 end

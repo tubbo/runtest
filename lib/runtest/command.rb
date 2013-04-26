@@ -8,10 +8,12 @@ module Runtest
       @file_name =  arguments[0] || ""
       @line_number = arguments[1].to_i || 0
       @base_command = "bundle exec ruby -Itest"
+
+      raise FileNotFound unless File.exists? file_name
     end
 
     def perform!
-      if line_number.zero?
+      if line_number <= 0
         run_test
       else
         run_test "-n '#{closest_example}'"
@@ -27,7 +29,11 @@ module Runtest
     end
 
     def line_number
-      @line_number.to_i - 1
+      if @line_number <= 0
+        0
+      else
+        @line_number.to_i - 1
+      end
     end
 
     def base_command
